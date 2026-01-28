@@ -1,0 +1,36 @@
+# =====================
+# Python artifacts
+# =====================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# =====================
+# Virtual environments
+# =====================
+.env
+.venv/
+conda-meta/
+
+# =====================
+# Generated data
+# =====================
+data/raw/
+data/processed/
+
+# =====================
+# Logs
+# =====================
+*.log
+
+# =====================
+# Editor / OS files
+# =====================
+.vscode/
+.DS_Store
+
+# =====================
+# Draw.io backups
+# =====================
+*.drawio.bkp
