@@ -34,3 +34,5 @@ data/processed/
 # Draw.io backups
 # =====================
 *.drawio.bkp
+
+fix_events_csv.py

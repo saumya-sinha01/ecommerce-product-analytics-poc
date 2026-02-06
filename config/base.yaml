@@ -7,3 +7,91 @@ data:
   end_date: "2023-12-31"
 
 random_seed: 42
+
+storage:
+  s3:
+    endpoint_url: "http://localhost:4566"
+    region: "us-east-1"
+    access_key: "test"
+    secret_key: "test"
+    raw_bucket: "ecom-poc-raw"
+    processed_bucket: "ecom-poc-processed"
+    raw_prefix: "raw"
+    processed_prefix: "processed"
+
+paths:
+  raw:
+    users: "users/users.csv"
+    products: "products/products.csv"
+    experiment_assignments: "experiment_assignments/experiment_assignments.csv"
+    sessions: "sessions/sessions.csv"
+    events: "events/events.csv"
+  processed:
+    staged:
+      users: "staged/users/users.parquet"
+      products: "staged/products/products.parquet"
+      experiment_assignments: "staged/experiment_assignments/experiment_assignments.parquet"
+      sessions: "staged/sessions/sessions.parquet"
+    clean_events_prefix: "events_clean"
+
+    marts:
+      user_exposure: "marts/user_exposure/user_exposure.parquet"
+      user_outcomes: "marts/user_outcomes/user_outcomes.parquet"
+
+# If your CSV header differs, update the mapping below.
+schema:
+  users:
+    user_id: "user_id"
+    created_ts: "created_ts"       # optional
+    device_type: "device_type"     # optional
+    geo: "geo"                     # optional
+
+  products:
+    product_id: "product_id"
+    price: "price"                 # optional
+    category: "category"           # optional
+
+  experiment_assignments:
+    user_id: "user_id"
+    variant: "variant"
+    experiment_id: "experiment_id" # optional
+
+  sessions:
+    session_id: "session_id"
+    user_id: "user_id"
+    session_start_ts: "session_start_ts"  # optional
+    session_end_ts: "session_end_ts"      # optional
+    device_type: "device_type"            # optional
+
+  events:
+    event_ts: "event_ts"
+    user_id: "user_id"
+    session_id: "session_id"
+    event_name: "event_type"
+    product_id: "product_id"       # optional
+    price_paid: "price_paid"       # optional
+    quantity: "quantity"           # optional
+    discount_amount: "discount_amount"  # optional
+    device_type: "device_type"     # optional
+
+experiment:
+  default_experiment_id: "pdp_redesign_experiment"
+
+etl:
+  events_chunksize: 200000
+  normalize_event_names: true
+  write_single_file_for_staged: true   # easier first; can switch later
+  event_aliases:
+    checkout_start: "begin_checkout"
+    checkout_begin: "begin_checkout"
+    addtocart: "add_to_cart"
+    pdp: "pdp_view"
+mart:
+  outcome_window_days: 7
+  event_names:
+    exposure_event: "view_product"
+    add_to_cart: "add_to_cart"
+    begin_checkout: "begin_checkout"
+    purchase: "purchase"
+
+
